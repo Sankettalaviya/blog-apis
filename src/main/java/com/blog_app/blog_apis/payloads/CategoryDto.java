@@ -1,10 +1,15 @@
 package com.blog_app.blog_apis.payloads;
 
+
+
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.List;
+import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -20,4 +25,6 @@ public class CategoryDto {
   @NotBlank(message = "please enter category description")
   @Size(min = 10, message = "description size shuold be minimum 10 ")
   private String categoryDescription;
+
+
 }
