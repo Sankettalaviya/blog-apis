@@ -67,6 +67,7 @@ public class PostServiceImpl implements PostService {
       .orElseThrow(() -> new ResourceNotFoundException("post", "id", postId));
     post.setTitle(postDto.getTitle());
     post.setContent(postDto.getContent());
+    post.setImageName(postDto.getImageName());
     Post updatedPost = postRepo.save(post);
     return modelMapper.map(updatedPost, PostDto.class);
   }
@@ -114,14 +115,6 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
-  public void deletePost(Integer postId) {
-    postRepo
-      .findById(postId)
-      .orElseThrow(() -> new ResourceNotFoundException("post", "id", postId));
-    postRepo.deleteById(postId);
-  }
-
-  @Override
   public List<PostDto> getPostbyCategory(Integer categoryId) {
     Category category = categoryRepo
       .findById(categoryId)
@@ -153,7 +146,20 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
+  public void deletePost(Integer postId) {
+    postRepo
+      .findById(postId)
+      .orElseThrow(() -> new ResourceNotFoundException("post", "id", postId));
+    postRepo.deleteById(postId);
+  }
+
+  @Override
   public List<PostDto> searchPost(String keyword) {
-    return List.of();
+    List<Post> posts = postRepo.findByTitleContaining(keyword);
+    List<PostDto> postDtos = posts
+      .stream()
+      .map(post -> modelMapper.map(post, PostDto.class))
+      .collect(Collectors.toList());
+    return postDtos;
   }
 }
