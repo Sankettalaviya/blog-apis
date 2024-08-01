@@ -2,6 +2,7 @@ package com.blog_app.blog_apis.controllers;
 
 import com.blog_app.blog_apis.payloads.ApiResponse;
 import com.blog_app.blog_apis.payloads.PostDto;
+import com.blog_app.blog_apis.payloads.PostResponse;
 import com.blog_app.blog_apis.services.PostService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +38,19 @@ public class PostController {
 
   //get all post
   @GetMapping("/")
-  public ResponseEntity<List<PostDto>> getAllPostHandler(
-    @RequestParam(value = "pageNumber",defaultValue = "0",required = false) Integer pageNumber,
-    @RequestParam(value = "pageSize",defaultValue = "3",required = false) Integer pageSize
+  public ResponseEntity<PostResponse> getAllPostHandler(
+    @RequestParam(defaultValue = "0", required = false) Integer pageNumber,
+    @RequestParam(defaultValue = "3", required = false) Integer pageSize,
+    @RequestParam(defaultValue = "postId", required = false) String sortBy,
+    @RequestParam(defaultValue = "asc", required = false) String scrollDir
   ) {
-    List<PostDto> posts = postService.getAllPost(pageNumber, pageSize);
-    return new ResponseEntity<>(posts, HttpStatus.OK);
+    PostResponse postResponse = postService.getAllPost(
+      pageNumber,
+      pageSize,
+      sortBy,
+      scrollDir
+    );
+    return new ResponseEntity<>(postResponse, HttpStatus.OK);
   }
 
   //get all post

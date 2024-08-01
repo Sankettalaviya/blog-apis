@@ -5,6 +5,7 @@ import com.blog_app.blog_apis.models.Category;
 import com.blog_app.blog_apis.models.Post;
 import com.blog_app.blog_apis.models.User;
 import com.blog_app.blog_apis.payloads.PostDto;
+import com.blog_app.blog_apis.payloads.PostResponse;
 import com.blog_app.blog_apis.repositories.CategoryRepo;
 import com.blog_app.blog_apis.repositories.PostRepo;
 import com.blog_app.blog_apis.repositories.UserRepo;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -69,8 +72,18 @@ public class PostServiceImpl implements PostService {
   }
 
   @Override
-  public List<PostDto> getAllPost(Integer pageNumber,Integer pageSize) {
-    Pageable pageable = PageRequest.of(pageNumber, pageSize);
+  public PostResponse getAllPost(
+    Integer pageNumber,
+    Integer pageSize,
+    String sortBy,
+    String scrollDir
+  ) {
+    Sort sort = null;
+    sort =
+      (scrollDir.equals("asc"))
+        ? Sort.by(Direction.ASC, sortBy)
+        : Sort.by(Direction.DESC, sortBy);
+    Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
     Page<Post> pagePosts = postRepo.findAll(pageable);
     List<Post> allPosts = pagePosts.getContent();
@@ -78,7 +91,17 @@ public class PostServiceImpl implements PostService {
       .stream()
       .map(post -> modelMapper.map(post, PostDto.class))
       .collect(Collectors.toList());
-    return postDtos;
+
+    PostResponse postResponse = new PostResponse();
+    postResponse.setContent(postDtos);
+    postResponse.setPageNumber(pagePosts.getNumber());
+    postResponse.setPageSize(pagePosts.getSize());
+    postResponse.setTotalElements(pagePosts.getTotalElements());
+    postResponse.setTotalPages(pagePosts.getTotalPages());
+    postResponse.setSortedBy(sortBy);
+    postResponse.setLatPage(pagePosts.isLast());
+
+    return postResponse;
   }
 
   @Override
