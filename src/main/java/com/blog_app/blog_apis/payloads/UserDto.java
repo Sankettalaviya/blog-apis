@@ -3,6 +3,7 @@ package com.blog_app.blog_apis.payloads;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import java.util.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,4 +27,6 @@ public class UserDto {
 
   @NotBlank(message = "please fill about section")
   private String about;
+
+  private List<CommentDto> comments = new ArrayList<>();
 }

@@ -3,17 +3,14 @@ package com.blog_app.blog_apis.controllers;
 import com.blog_app.blog_apis.payloads.ApiResponse;
 import com.blog_app.blog_apis.payloads.PostDto;
 import com.blog_app.blog_apis.payloads.PostResponse;
-import com.blog_app.blog_apis.services.FileService;
 import com.blog_app.blog_apis.services.PostService;
 import com.blog_app.blog_apis.services.impl.FileServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

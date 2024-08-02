@@ -4,6 +4,7 @@ import java.util.Date;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.*;
 
 @Getter
 @Setter
@@ -23,4 +24,7 @@ public class PostDto {
   private CategoryDto category;
 
   private UserDto user;
+
+  private List<CommentDto> comments = new ArrayList<>();
+
 }
